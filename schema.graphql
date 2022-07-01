@@ -1,0 +1,8 @@
+type Transaction @entity {
+  id: ID!
+  receiverId: String!
+  amount: String
+  memo: String
+  dataString: String
+  # status: Boolean!
+}
