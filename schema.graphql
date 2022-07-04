@@ -1,8 +1,9 @@
 type Transaction @entity {
   id: ID!
-  receiverId: String!
+  senderId: String!
   amount: String
-  memo: String
-  dataString: String
+  refferalId: String
+  actionString: String
+  # dataString: String
   # status: Boolean!
 }

@@ -6,8 +6,8 @@ dataSources:
     name: Transactions
     network: near-mainnet
     source:
-      account: "wrap.near"
-      startBlock: 68917705
+      account: "v2.ref-finance.near"
+      startBlock: 68958194
     mapping:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
