@@ -6,8 +6,8 @@ dataSources:
     name: Transactions
     network: near-mainnet
     source:
-      account: "v2.ref-finance.near"
-      startBlock: 68958194
+      account: "spoiler.near"
+      startBlock: 69234715
     mapping:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
@@ -15,4 +15,19 @@ dataSources:
         - Transaction
       receiptHandlers:
         - handler: handleReceipt
-      file: ./src/transactions.ts
+      file: ./src/mappings.ts
+dataSources:
+  - kind: near
+    name: Transactions
+    network: near-mainnet
+    source:
+      account: "wrap.near"
+      startBlock: 69234715
+    mapping:
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Transaction
+      receiptHandlers:
+        - handler: handleReceipt
+      file: ./src/mappings.ts      

@@ -26,7 +26,7 @@ function handleAction(
   const outcome = receipt.outcome;
   const methodName = action.toFunctionCall().methodName;
 
-  if (methodName == 'ft_on_transfer') {
+  if (methodName == 'ft_transfer_call') {
     // log.debug('action = {}', [action.data.toString()]);
 
     // const argsString = action.toFunctionCall().args.toString();
@@ -36,8 +36,8 @@ function handleAction(
 
     if (argsObject) {
       let sender: string | null;
-      if (argsObject.get('sender_id')) {
-        sender = argsObject.get('sender_id')!.toString();
+      if (argsObject.get('receiver_id')) {
+        sender = argsObject.get('receiver_id')!.toString();
       } else {
         sender = '';
       }
@@ -49,36 +49,38 @@ function handleAction(
         amt = '';
       }
 
-      let msgObject: TypedMap<string, JSONValue> | null;
-      let actions: TypedMap<string, JSONValue> | null;
-      let refId: string | null;
-      if (argsObject.get('msg')) {
-        let msgString = argsObject.get('msg')!.toString();
-        msgObject = json.try_fromString(msgString).value.toObject();
-
-        refId = msgObject.get('referral_id')!.toString();
+      let memo: string | null;
+      if (argsObject.get('memo')) {
+        memo = argsObject.get('memo')!.toString();
       } else {
-        msgObject = null;
-        actions = null;
-        refId = '';
+        memo = '';
       }
 
-      let logs: string | null;
+      // let msgObject: TypedMap<string, JSONValue> | null;
+      // let actions: TypedMap<string, JSONValue> | null;
+      // let refId: string | null;
+      // if (argsObject.get('msg')) {
+      //   let msgString = argsObject.get('msg')!.toString();
+      //   msgObject = json.try_fromString(msgString).value.toObject();
 
-      logs = outcome.logs.toString();
+      //   refId = msgObject.get('referral_id')!.toString();
+      // } else {
+      //   msgObject = null;
+      //   actions = null;
+      //   refId = '';
+      // }
+
+      // let logs: string | null;
+
+      // logs = outcome.logs.toString();
 
       // log.debug('args = {}', [argsString.slice(10)]);
       // Check for the refferal field
-      if (refId !== 'arbitoor.near') {
+      if (memo !== 'arbitoor.near') {
         return;
       }
 
-      log.debug('sendId = {} amount = {} refId = {}  logs = {}', [
-        sender,
-        amt,
-        refId,
-        logs,
-      ]);
+      log.debug('sendId = {} amount = {} memo = {}  ', [sender, amt, memo]);
 
       // let txn = Transaction.load(receipt.receipt.id.toBase58());
       // if (!txn) {
@@ -101,8 +103,6 @@ function handleAction(
   }
   return;
 }
-
-
 
 // import {
 //   near,
@@ -184,13 +184,13 @@ function handleAction(
 //         if (!txn) {
 //           // const status = getOrInitStatus();
 //           // const latestPrice = status.price;
-  
+
 //           txn = new Transaction(receipt.receipt.id.toBase58());
 //           txn.senderId = sender;
 //           txn.amount = amt;
 //           txn.refferalId = refId;
 //           txn.actionString = actions[0].toString();
-  
+
 //           txn.save();
 //         } else {
 //           log.error('Internal Error: {}', ['Storing Data']);
